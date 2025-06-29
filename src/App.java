@@ -36,7 +36,7 @@ public class App {
             System.out.println("2. View Products");
             System.out.println("3. Update Quantity");
             System.out.println("4. Remove Product");
-            System.out.println("5. Searching Product by ID");
+            System.out.println("5. Searching Product by name");
             System.out.println("6. Show Total Product Count");
             System.out.println("7. Exit");
             System.out.println("----------------------------");
@@ -49,9 +49,9 @@ public class App {
                 case 1 -> addProduct(inventory, scanner);
                 case 2 -> viewProducts(inventory);
                 case 3 -> updateQuantity(inventory, scanner);
-                case 4 -> System.out.println("You chose 4."); //remove product
-                case 5 -> System.out.println("You chose 5."); //searching product by its name
-                case 6 -> System.out.println("You chose 6."); //show total product count
+                case 4 -> removeProduct(inventory, scanner); 
+                case 5 -> searchProductByItsName(inventory, scanner);
+                case 6 -> totalProductCount(inventory, scanner);
                 case 7 -> System.exit(0);
                 default -> System.out.println("Invalid option.");
             }
@@ -180,6 +180,61 @@ public class App {
         }
 
         System.out.println("----------------------------");
+    }
+
+    public static void searchProductByItsName(ArrayList<Product> inventory, Scanner scanner) {
+        System.out.println("----------------------------");
+        System.out.println("INVENTORY SEARCH TOOL");
+        System.out.println("----------------------------");
+
+        if(inventory.isEmpty()) {
+            System.out.println("Invalid request, inventory is EMPTY.");
+            System.out.println("----------------------------");
+            return;
+        }   
+
+        boolean found = false;
+
+        System.out.print("Enter a product name you would like to search: ");
+        String productName = scanner.nextLine().trim().toLowerCase(); //just so in case we have to ignore blank spaces and the higher/lower case
+
+        for(Product p : inventory) {
+            //we cant use == to compare because ain't primitive type, we are working with a object now
+            if(p.name.toLowerCase().equals(productName)) {
+                System.out.println("PRODUCT FOUND!");
+                System.out.println(p);
+                System.out.println("----------------------------");
+                found = true;
+                break;
+            }
+        }
+
+        if(!found) {
+            System.out.println("No product with that name was found.");
+        }
+        System.out.println("----------------------------");
+    }
+
+    public static void totalProductCount(ArrayList<Product> inventory, Scanner scanner) {
+
+        System.out.println("----------------------------");
+        System.out.println("INVENTORY TOTAL COUNTER");
+
+        if(inventory.isEmpty()) {
+            System.out.println("The total count is equal to 0. Inventory is EMPTY.");
+            System.out.println("----------------------------");
+            return;
+
+        }
+
+        int total = 0;
+
+        for(Product p : inventory) {
+            total += p.quantity;
+        }
+
+        System.out.println("----------------------------");
+        System.out.println("Total quantity of all products: " + total);
     }
 }
 
